@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FarmiGrow - Smart Farming</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f4fff4;
+    }
+
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
+
+    nav {
+      background: #1b5e20;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 15px;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .hero h1 {
+      color: #1b5e20;
+      font-size: 40px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .btn {
+      background: #43a047;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background: #2e7d32;
+    }
+
+    footer {
+      background: #1b5e20;
+      padding: 15px;
+      color: white;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    /* WEATHER SECTION */
+    .weather-section {
+      background: white;
+      padding: 30px;
+      margin: 40px auto;
+      width: 80%;
+      max-width: 500px;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    input {
+      padding: 10px;
+      width: 70%;
+      margin-top: 10px;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌱 FarmiGrow</h1>
+  <p>Smart Farming for a Better Tomorrow</p>
+</header>
+
+<nav>
+  <a href="#">Home</a>
+  <a href="#">Services</a>
+  <a href="#">Crops</a>
+  <a href="#">Weather</a>
+  <a href="#">Contact</a>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <h1>Welcome to FarmiGrow</h1>
+  <p>
+    We help farmers with smart tools, crop suggestions, and real-time weather updates.
+    <br>
+    Plant/Crop Health Detection.
+  </p>
+
+  <!-- BUTTON 1 -->
+  <button class="btn" onclick="goToWebsite1()">
+    Plant Health AI
+  </button>
+
+  <!-- BUTTON 2 (NEW) -->
+  <button class="btn" onclick="goToWebsite2()">
+    Visit Agri Tools 
+  </button>
+</section>
+
+<!-- WEATHER API SECTION -->
+<section class="weather-section">
+  <h2>🌤️ Check Weather</h2>
+  <p>Enter your city name</p>
+
+  <input type="text" id="city" placeholder="Enter city name">
+  <br>
+  <button class="btn" onclick="getWeather()">Get Weather</button>
+
+  <div class="result" id="result"></div>
+</section>
+
+
+<footer>
+  © 2025 FarmiGrow | All Rights Reserved
+  <br>
+  Contact: +91 XXXXX XXXXX
+  <br>
+  E-mail: farmigrow@gmail.com
+</footer>
+
+<script>
+
+  /* BUTTON 1 FUNCTION */
+  function goToWebsite1()
+  {
+    // CHANGE THIS TO YOUR FIRST WEBSITE
+    window.location.href = "https://idea-helper-space.lovable.app/"; 
+  }
+
+  /* BUTTON 2 FUNCTION (NEW) */
+  function goToWebsite2()
+  {
+    // CHANGE THIS TO YOUR SECOND WEBSITE
+    window.location.href = "https://amzn.in/d/4uBxNT6";
+  }
+
+  /* WEATHER API FUNCTION */
+  async function getWeather()
+  {
+    const city = document.getElementById("city").value;
+
+    // PASTE YOUR API KEY HERE
+    const apiKey = "019c3e1ab3b4a4fa3ec8b3fb1e0fe230";
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+    try 
+    {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.cod === "404")
+      {
+        document.getElementById("result").innerHTML = "❌ City not found!";
+      }
+      else 
+      {
+        const temp = data.main.temp;
+        const humidity = data.main.humidity;
+        const weather = data.weather[0].main;
+
+        document.getElementById("result").innerHTML =
+          `<b>City:</b> ${city} <br>
+           <b>Temperature:</b> ${temp} °C <br>
+           <b>Humidity:</b> ${humidity}% <br>
+           <b>Condition:</b> ${weather}`;
+      }
+
+    } 
+    catch (error) 
+    {
+      document.getElementById("result").innerHTML = "⚠️ Error fetching data";
+    }
+  }
+
+</script>
+<script>
+function suggestCrops() {
+    const soilType = document.getElementById("soilType").value;
+    const fieldSize = document.getElementById("fieldSize").value;
+    const soilFile = document.getElementById("soilFile").value;
+
+    let crops = [];
+
+    // --- AI RULE ENGINE ---
+    if (soilFile) {
+        crops = ["Wheat", "Paddy", "Sugarcane", "Sunflower", "Marigold"];
+    } else if (soilType === "loamy") {
+        crops = ["Wheat", "Maize", "Tomato", "Sunflower", "Chrysanthemum"];
+    } else if (soilType === "clay") {
+        crops = ["Rice (Paddy)", "Sugarcane", "Jute", "Lotus"];
+    } else if (soilType === "sandy") {
+        crops = ["Groundnut", "Coconut", "Watermelon", "Cactus", "Marigold"];
+    } else if (soilType === "black") {
+        crops = ["Cotton", "Soybean", "Tobacco", "Sunflower"];
+    } else if (soilType === "red") {
+        crops = ["Millets", "Groundnut", "Potato", "Rose"];
+    }
+
+    
+    document.getElementById("resultBox").style.display = "block";
+    document.getElementById("suggestions").innerHTML = crops.join(", ");
+
+    let finalSelect = document.getElementById("finalCrop");
+    finalSelect.innerHTML = "<option>Select Crop…</option>";
+
+    crops.forEach(crop => {
+        let opt = document.createElement("option");
+        opt.value = crop;
+        opt.textContent = crop;
+        finalSelect.appendChild(opt);
+    });
+
+    let ownChoice = document.createElement("option");
+    ownChoice.value = "other";
+    ownChoice.textContent = "Other (Enter your own crop)";
+    finalSelect.appendChild(ownChoice);
+}
+</script>
+</body>
+</html>

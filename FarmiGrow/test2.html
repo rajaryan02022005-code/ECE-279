@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmiGrow - Smart Crop Suggestion</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #28a745;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            background: #fff;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .section {
+            margin-top: 25px;
+            padding: 15px;
+            background: #eef1f7;
+            border-radius: 8px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #aaa;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #dff5e1;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .choices {
+            margin-top: 10px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .link-button {
+            margin-top: 20px;
+            background: #007bff;
+        }
+
+        .link-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">FarmiGrow – Helping Farmers in Agriculture</div>
+
+<div class="container">
+    <h2>Smart Crop & Plant Suggestion System</h2>
+
+    <!-- Soil Report Upload Section -->
+    <div class="section">
+        <h3>1. Upload Your Soil Report (Optional)</h3>
+        <input type="file" id="soilFile" accept=".pdf,.jpg,.jpeg,.png">
+    </div>
+
+    <!-- Manual Inputs Section -->
+    <div class="section">
+        <h3>2. Or Answer These Questions</h3>
+
+        <label>Soil Type</label>
+        <select id="soilType">
+            <option value="">-- Select Soil Type --</option>
+            <option value="loamy">Loamy</option>
+            <option value="clay">Clay</option>
+            <option value="sandy">Sandy</option>
+            <option value="black">Black Soil</option>
+            <option value="red">Red Soil</option>
+        </select>
+
+        <label>Field Size (in acres)</label>
+        <input type="number" id="fieldSize" placeholder="Enter field area in acres">
+    </div>
+
+    <button onclick="suggestCrops()">Get Crop Suggestions</button>
+
+    <!-- New Link Button for Next Webpage -->
+    <button class="link-button" onclick="window.location.href=//idea-helper-space.lovable.app/">
+        Go to More Services
+    </button>
+
+    <div id="resultBox" class="results">
+        <h3>Recommended Crops / Plants:</h3>
+        <p id="suggestions"></p>
+
+        <div class="choices">
+            <label>Select Your Preferred Crop:</label>
+            <select id="finalCrop">
+                <option value="">Choose Crop…</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<script>
+function suggestCrops() {
+    const soilType = document.getElementById("soilType").value;
+    const fieldSize = document.getElementById("fieldSize").value;
+    const soilFile = document.getElementById("soilFile").value;
+
+    let crops = [];
+
+    // --- AI RULE ENGINE ---
+    if (soilFile) {
+        crops = ["Wheat", "Paddy", "Sugarcane", "Sunflower", "Marigold"];
+    } else if (soilType === "loamy") {
+        crops = ["Wheat", "Maize", "Tomato", "Sunflower", "Chrysanthemum"];
+    } else if (soilType === "clay") {
+        crops = ["Rice (Paddy)", "Sugarcane", "Jute", "Lotus"];
+    } else if (soilType === "sandy") {
+        crops = ["Groundnut", "Coconut", "Watermelon", "Cactus", "Marigold"];
+    } else if (soilType === "black") {
+        crops = ["Cotton", "Soybean", "Tobacco", "Sunflower"];
+    } else if (soilType === "red") {
+        crops = ["Millets", "Groundnut", "Potato", "Rose"];
+    }
+
+    if (crops.length === 0) {
+        alert("Please upload a soil report or select soil details!");
+        return;
+    }
+
+    document.getElementById("resultBox").style.display = "block";
+    document.getElementById("suggestions").innerHTML = crops.join(", ");
+
+    let finalSelect = document.getElementById("finalCrop");
+    finalSelect.innerHTML = "<option>Select Crop…</option>";
+
+    crops.forEach(crop => {
+        let opt = document.createElement("option");
+        opt.value = crop;
+        opt.textContent = crop;
+        finalSelect.appendChild(opt);
+    });
+
+    let ownChoice = document.createElement("option");
+    ownChoice.value = "other";
+    ownChoice.textContent = "Other (Enter your own crop)";
+    finalSelect.appendChild(ownChoice);
+}
+</script>
+
+</body>
+</html>
